@@ -124,27 +124,27 @@ def evaluateDateFromInput(query):
 		
 		cases = [
 			(
-				rToday, # done
+				rToday, 
 				fToday
 			),
 			(
-				rYesterday, # done
+				rYesterday, 
 				fYesterday
 			),
 			(
-				rXAgo, # done? -> yes
+				rXAgo,
 				fXAgo
 			),
 			(
-				rXAgoShorthand, # done? -> yes
+				rXAgoShorthand,
 				fXAgoShorthand
 			),
 			(
-				rDateString, # done? -> yes
+				rDateString,
 				fDateString				
 			),
 			(
-				rDayOfWeek, # done? -> yes
+				rDayOfWeek,
 				fDayOfWeek
 			)
 		]
@@ -158,6 +158,7 @@ def evaluateDateFromInput(query):
 	
 # Okay so right now there is a pattern of "Access File", where I have some procedure I want to run on a file, and I have some date I need to build that filename
 # if that file doesn't exist
+# TODO this could potentially become "accessFiles" and take a list of filenames it iterates over
 def accessFile(filename, fileOperationProc, fileDoesNotExistProc):
 	if not fileExists(filename):
 		returnCode = fileDoesNotExistProc(filename)
