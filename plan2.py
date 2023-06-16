@@ -31,10 +31,7 @@ def ListPlans(args):
 		print(filename) # some of this could probably be a bash command instead
 			# in fact, couldn't all this be a bash command? lol. we're just editing a text file
 
-def ReadPlan(args):
-	query = args[0].lower() if (args[0] != "") else "today"
-
-	def evaluateDateFromInput(q):
+def evaluateDateFromInput(q):
 		def regexLambda(p):
 			return lambda p, q: re.match(p, q)
 
@@ -154,6 +151,11 @@ def ReadPlan(args):
 
 		return "default" # TODO return error
 
+	
+
+def ReadPlan(args):
+	
+
 	# for now, if there is nothing at the corresponding date, then we'll just say so
 	# eventually I want a "def findNearest" that will give you the option to scan for the nearest date and pull that up
 
@@ -165,6 +167,8 @@ def ReadPlan(args):
 			print(contents)
 		print("\n\n")
 
+
+	query = args[0].lower() if (args[0] != "") else "today"
 	targetDate = evaluateDateFromInput(query)
 	filename = buildFilename(targetDate)
 	
@@ -217,7 +221,21 @@ def UpsertPlan(args):
 	# TODO return code
 	return 0
 
-		
+
+# note, this has the exact same structure as read plan
 def DeletePlan(args):
-	print("deleting plan!")
+	def deleteFile(filename): 
+		print("deleting {}".format(filename))
+		os.remove(filename)
+	
+	query = args[0].lower() if (args[0] != "") else "today"
+	targetDate = evaluateDateFromInput(query)
+	filename = buildFilename(targetDate)
+	
+	if not fileExists(filename):
+		# throw a real error
+		print("hey that doesn't exist!")
+		return 1
+
+	deleteFile(filename)
 
