@@ -3,7 +3,7 @@ import plan
 def Router(cmd, args):
 	match (cmd):
 		case "r" | "read":
-			return plan.ReadPlan2(args)
+			return plan.ReadPlan(args)
 
 		case "w" | "write":
 			return plan.UpsertPlan(args)
@@ -12,7 +12,7 @@ def Router(cmd, args):
 			return plan.SearchPlans(args)
 
 		case "d" | "delete":
-			return plan.DeletePlan2(args)
+			return plan.DeletePlan(args)
 
 		case "l" | "list":
 			return plan.ListPlans(args)

@@ -168,7 +168,7 @@ def accessFile(filename, fileOperationProc, fileDoesNotExistProc):
 	
 	fileOperationProc(filename)
 
-def ReadPlan2(args):
+def ReadPlan(args):
 	# for now, if there is nothing at the corresponding date, then we'll just say so
 	# eventually I want a "def findNearest" that will give you the option to scan for the nearest date and pull that up
 	def readFile(filename):
@@ -191,33 +191,6 @@ def ReadPlan2(args):
 		readFile, 
 		doesNotExist
 	)
-	return 0
-
-
-
-
-
-def ReadPlan(args):
-	# for now, if there is nothing at the corresponding date, then we'll just say so
-	# eventually I want a "def findNearest" that will give you the option to scan for the nearest date and pull that up
-	def readFile(filename):
-		print("\n\n")
-		print("reading {}:\n".format(filename))
-		with open(filename, "r") as file:
-			contents = file.read()
-			print(contents)
-		print("\n\n")
-
-
-	targetDate = evaluateDateFromInput(args)
-	filename = buildFilename(targetDate)
-	
-	if not fileExists(filename):
-		# throw a real error
-		print("hey that doesn't exist!")
-		return 1
-
-	readFile(buildFilename(targetDate))
 	return 0
 
 def SearchPlans(args):
@@ -260,7 +233,7 @@ def UpsertPlan(args):
 	return 0
 
 # note, this has the exact same structure as read plan
-def DeletePlan2(args):
+def DeletePlan(args):
 	def deleteFile(filename): 
 		print("deleting {}".format(filename))
 		os.remove(filename)
@@ -273,20 +246,3 @@ def DeletePlan2(args):
 	filename = buildFilename(targetDate)
 	
 	accessFile(filename, deleteFile, ifDoesNotExist)
-
-# note, this has the exact same structure as read plan
-def DeletePlan(args):
-	def deleteFile(filename): 
-		print("deleting {}".format(filename))
-		os.remove(filename)
-
-	targetDate = evaluateDateFromInput(args)
-	filename = buildFilename(targetDate)
-	
-	if not fileExists(filename):
-		# throw a real error
-		print("hey that doesn't exist!")
-		return 1
-
-	deleteFile(filename)
-
