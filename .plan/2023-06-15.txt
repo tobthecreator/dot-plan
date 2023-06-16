@@ -15,3 +15,4 @@ Dot-Plan .plan for June 15, 2023
 * need to get this port from replit working locally
 * look for python extensions in VS Code
 * write a readme with examples for myself for later
+! auto git commits for .plan directory
