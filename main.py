@@ -1,6 +1,8 @@
 from line import CreateLine
 import plan
 import plan2
+import sys
+from router import Router
 
 # def LoadCliConfig()
 # def LoadProjectConfig() # checks to see if there is a plan folder here
@@ -8,7 +10,21 @@ import plan2
 def main():
 	print("Hello World from python!")
 
+	def getRouterArgs():
+		def extractSysArg(a):
+			return a if (a != "") else None
 
+		command = sys.argv[1]
+		arg2 = extractSysArg(sys.argv[2])
+		arg3 = extractSysArg(sys.argv[3])
+
+		return (command, (arg2, arg3))
+
+	cmd, args = getRouterArgs()
+	Router(cmd, args)
+	
+
+	# print("{} {}".format(command, args))
 	"""
  	Structure I'm going with here is:
 	(
@@ -40,12 +56,12 @@ def main():
 
 	# plan.OpenPlan()
 
-	readCmds = ["2 days ago", "today", "yesterday", "2022-01-01", "01-01-2022", "-3m3w3d", "-72m2w4d", "monday", "last monday", "-1d", "2023-06-16"]
+	# readCmds = ["2 days ago", "today", "yesterday", "2022-01-01", "01-01-2022", "-3m3w3d", "-72m2w4d", "monday", "last monday", "-1d", "2023-06-16"]
 
-	for cmd in readCmds:
-		print("\n\n")
-		print("{}: {}".format(cmd, plan2.ReadPlan(cmd)))
-		print("\n\n")
+	# for cmd in readCmds:
+	# 	print("\n\n")
+	# 	print("{}: {}".format(cmd, plan2.ReadPlan(cmd)))
+	# 	print("\n\n")
 
 	# next we're going to want to create a file, or update an existing one
 

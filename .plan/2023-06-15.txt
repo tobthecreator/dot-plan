@@ -16,3 +16,8 @@ Dot-Plan .plan for June 15, 2023
 * look for python extensions in VS Code
 * write a readme with examples for myself for later
 ! auto git commits for .plan directory
+
+--------------------------------
+Dot-Plan .plan for June 16, 2023
+--------------------------------
+* starting with hooking up bash commands to what I already have, everything will go under r for now
