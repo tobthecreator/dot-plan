@@ -1,0 +1,17 @@
+----------------------------------------
+Dot-Plan .plan for June 15, 2023
+----------------------------------------
+! would be very cool to allow "two days ago" "today" "yesterday" as inputs
+! could allow for multiple projects, and then wherever you're using the CLI you can log an idea to another project. cross-polination of ideas happens all the time
+* if we do the project thing, make a module for that specifically
+? I should look up how people actually build CLIs, this is going to be a very hacky thing but a good reintroduction to Python after years
+? Realizing now I could probably write this whole thing in Bash if i simplified it. We forge ahead
++ ChatGPT is very good at transpiling TS code into Python
++ also good for teaching me new concepts in Python as I encounter them
+- Got very excited by allowing many natural language inputs as read args, but didn't leave myself enough room to cleanup the code after such a good start
+* we want a project config in a given .plan
+* we want CLI config wherever you put it
+* need to clean up the original plan.py and kill it
+* need to get this port from replit working locally
+* look for python extensions in VS Code
+* write a readme with examples for myself for later
