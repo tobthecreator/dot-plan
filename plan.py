@@ -233,6 +233,8 @@ def UpsertPlan(args):
 		with open(filename, "w") as f:
 			f.write(header)
 
+		return 0
+
 	
 	def updatePlan(filename, update):
 		with open(filename, "a") as f:
@@ -246,17 +248,13 @@ def UpsertPlan(args):
 	##
 	today = date.today().strftime("%Y-%m-%d")
 	filename = buildFilename(today)
-
-
-	if not fileExists(filename):
-		createPlan(filename)
-
-
-	##
-	#	Format the line, then append
-	##
 	update = CreateLine(lineType, text)
-	updatePlan(filename, update)
+
+	accessFile(
+		filename, 
+		lambda f: updatePlan(f, update),
+		createPlan
+	)
 		
 	# TODO return code
 	return 0
