@@ -9,6 +9,7 @@ from line import CreateLine
 
 PLANS_DIR = '{}/.plan'.format(os.getcwd())
 
+# TODO, let's get all of the file stuff into it's own module
 def fileExists(filename):
 		return os.path.isfile(filename)
 
