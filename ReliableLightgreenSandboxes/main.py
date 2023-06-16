@@ -35,8 +35,8 @@ def main():
 
 	# use a map later
 	
-	for t, txt in tests:
-		lines = CreateLine(t, txt)
+	# for t, txt in tests:
+	# 	lines = CreateLine(t, txt)
 
 	# plan.OpenPlan()
 

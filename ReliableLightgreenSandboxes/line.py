@@ -1,8 +1,10 @@
 def CreateLine(t, txt):
-	match t:
+	match (t):
 		case "?" | "!" | "+" | "-" | "*":
 			o = "\t{}\t{}"
 			return o.format(t, txt)
-		case "n" | _:
+		case "n":
 			return txt
+		case _:
+			return "default"
 		
