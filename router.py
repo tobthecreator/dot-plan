@@ -1,3 +1,5 @@
+import plan2
+
 # here we're going to take in all of our CLI commands and parse them out to the right functions
 
 # can make a CMD enum if we care enough
@@ -6,7 +8,7 @@
 def Router(cmd, args):
 	match (cmd):
 		case "r" | "read":
-			print("read!", args)
+			plan2.ReadPlan(args)
 
 		case "w" | "write":
 			print("write!", args)
