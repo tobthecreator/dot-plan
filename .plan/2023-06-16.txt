@@ -1,0 +1,11 @@
+--------------------------------
+Dot-Plan .plan for June 16, 2023
+--------------------------------
+* starting with hooking up bash commands to what I already have, everything will go under r for now
++ have basic commands in the router hooked up to 3 args coming in through bash
+! would be nice to have a command that lets you all all plans, or plans between a specific set of dates
+? do python3 match cases need breaks? it doesn't seem so
+* let's work on writing stuff now
+* I definitely want to break these bad boys down into small modules at some point just for clarity
+- can't quite nail the spacing with */!/?/+/- being tabbed on every line, then notes have a space for readability. settled for notes now just being # and in-line with everything else
+* need to add return codes for success from the plan2.py module

@@ -5,8 +5,9 @@ import glob, os
 import re
 from datetime import date, timedelta
 from functools import reduce
+from line import CreateLine
 
-PLANS_DIR = '{}/plans'.format(os.getcwd())
+PLANS_DIR = '{}/.plan'.format(os.getcwd())
 
 def fileExists(filename):
 		return os.path.isfile(filename)
@@ -22,7 +23,7 @@ def getAllPlanFilenames():
 		return filenames
 
 
-def ListPlans():
+def ListPlans(args):
 	print("list plans!")
 	# print(os.getcwd())
 	
@@ -167,21 +168,56 @@ def ReadPlan(args):
 	targetDate = evaluateDateFromInput(query)
 	filename = buildFilename(targetDate)
 	
-	if (fileExists(filename)):
-		readFile(buildFilename(targetDate))
-
-	else:
+	if not fileExists(filename):
 		# throw a real error
 		print("hey that doesn't exist!")
+		return 1
+
+	readFile(buildFilename(targetDate))
+	return 0
+
+def SearchPlans(args):
+	print("search plans!")
+
+def UpsertPlan(args):
+	def createPlan(filename):
+		formattedDate = date.today().strftime("%B %d, %Y")
+		headerText = ".plan for {}".format(formattedDate)
+		headerDashes = "-"*len(headerText)
+		header = "{}\n{}\n{}\n".format(headerDashes, headerText, headerDashes)
+
+		with open(filename, "w") as f:
+			f.write(header)
+
 	
-	return targetDate
+	def updatePlan(filename, update):
+		with open(filename, "a") as f:
+			f.write(update)
+
+	# TODO check for args existing correctly
+	lineType, text = args
+
+	##
+	#	Find today's file, if it does not exist, create it
+	##
+	today = date.today().strftime("%Y-%m-%d")
+	filename = buildFilename(today)
 
 
+	if not fileExists(filename):
+		createPlan(filename)
 
 
-def UpsertPlan():
-	print("add lines to plan!")
+	##
+	#	Format the line, then append
+	##
+	update = CreateLine(lineType, text)
+	updatePlan(filename, update)
+		
+	# TODO return code
+	return 0
 
-def DeletePlan():
+		
+def DeletePlan(args):
 	print("deleting plan!")
 

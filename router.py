@@ -8,19 +8,19 @@ import plan2
 def Router(cmd, args):
 	match (cmd):
 		case "r" | "read":
-			plan2.ReadPlan(args)
+			return plan2.ReadPlan(args)
 
 		case "w" | "write":
-			print("write!", args)
+			return plan2.UpsertPlan(args)
 
 		case "s" | "search":
-			print("search!", args)
+			return plan2.SearchPlans(args)
 
 		case "d" | "delete":
-			print("delete!", args)
+			return plan2.DeletePlan(args)
 
 		case "l" | "list":
-			print("list!", args)
+			return plan2.ListPlans(args)
 
 		case _:
 			# throw an error
