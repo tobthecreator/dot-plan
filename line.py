@@ -3,8 +3,6 @@ def CreateLine(t, text):
 		case "?" | "!" | "+" | "-" | "*" | "#":
 			o = "\n\t{}\t{}"
 			return o.format(t, text)
-		# case "n":
-		# 	return "\n{}\n".format(text)
 		case _:
-			return "default"
+			raise print("Error: {} is not a valid update type".format(t))
 		
