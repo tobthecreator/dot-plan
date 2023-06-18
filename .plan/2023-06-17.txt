@@ -1,0 +1,7 @@
+--------------------------------
+Dot-Plan .plan for June 17, 2023
+--------------------------------
+
+# family day, not a lot of time
+* add some errors
+* add help function
