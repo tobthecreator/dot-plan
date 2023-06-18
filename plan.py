@@ -1,6 +1,3 @@
-# okay in this one we're just going to make each function responsible for 
-# managing it's own file access.
-
 import glob, os
 import re
 from datetime import date, timedelta
@@ -170,6 +167,10 @@ def accessFile(filename, fileOperationProc, fileDoesNotExistProc):
 	
 	fileOperationProc(filename)
 
+def ifFileDoesNotExist(_):
+	print("Error: that file does not exist")
+	return 1	
+
 def ReadPlan(args):
 	# for now, if there is nothing at the corresponding date, then we'll just say so
 	# eventually I want a "def findNearest" that will give you the option to scan for the nearest date and pull that up
@@ -181,17 +182,13 @@ def ReadPlan(args):
 			print(contents)
 		print("\n\n")
 
-	def doesNotExist(_):
-		print("hey that doesn't exist!")
-		return 1	
-
 	targetDate = evaluateDateFromInput(args)
 	filename = buildFilename(targetDate)
 	
 	accessFile(
 		filename, 
 		readFile, 
-		doesNotExist
+		ifFileDoesNotExist
 	)
 	return 0
 
@@ -209,7 +206,6 @@ def UpsertPlan(args):
 			f.write(header)
 
 		return 0
-
 	
 	def updatePlan(filename, update):
 		with open(filename, "a") as f:
@@ -239,12 +235,9 @@ def DeletePlan(args):
 	def deleteFile(filename): 
 		print("deleting {}".format(filename))
 		os.remove(filename)
-	
-	def ifDoesNotExist(_):
-		print("hey that doesn't exist!")
-		return 1
+
 
 	targetDate = evaluateDateFromInput(args)
 	filename = buildFilename(targetDate)
 	
-	accessFile(filename, deleteFile, ifDoesNotExist)
+	accessFile(filename, deleteFile, ifFileDoesNotExist)
