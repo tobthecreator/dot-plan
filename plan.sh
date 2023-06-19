@@ -5,4 +5,4 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-python3 main.py "$@"
+python3 ~/bin/dot-plan/main.py "$@"

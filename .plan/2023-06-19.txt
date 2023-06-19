@@ -5,3 +5,6 @@
 	+	handling multiple args
 	+	lots of cleanup
 	*	before trying projects, lets figure out installation into PATH etc
+	+	got an alias setup after some fighting with zsh
+	+ 	moved to /bin
+	+ 	going to move git over there, no reason not to?
