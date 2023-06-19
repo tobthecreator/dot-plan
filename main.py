@@ -10,14 +10,19 @@ def main():
 		def extractSysArg(a):
 			return a if (a != "") else None
 
+		print('[0]', sys.argv[0])
 		command = sys.argv[1]
-		arg2 = extractSysArg(sys.argv[2])
-		arg3 = extractSysArg(sys.argv[3])
+		args = sys.argv[2:]
 
-		return (command, (arg2, arg3))
+		print("boogahboogah")
+		print(args)
+
+		# TODO I've broken everything that depends on those args being normal 
+		return (command, args)
 
 	cmd, args = getRouterArgs()
-	Router(cmd, args)
+	# TODO make sure everything downwind can fix deal with multiple args
+	# Router(cmd, args)
 	
 if __name__ == "__main__":
     main()

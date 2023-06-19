@@ -1,6 +1,5 @@
 #!/bin/bash
 echo 'Running Script'
-# exec "ls"
 
 # Check if at least one argument is provided
 if [ $# -eq 0 ]; then
@@ -8,10 +7,10 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-python3 main.py "$1" "$2" "$3"
+# TODO for multiple args, we're gonna need an array
+# very easy to handle on the python side
 
-
-echo $command
+python3 main.py "$@"
 
 # read
 # r

@@ -7,3 +7,8 @@ Dot-Plan .plan for June 18, 2023
 * we can also move file access like this into a new file
 	+	writing to the .plan folder now
 	+	this was written by the tool!!!!
+	+ 	help command looks way better
+	* 	support multiple lines being added at once
+	*	move to project based stuff tomorrow
+	!	test
+	- 	getting "zsh: no matches found" because of the ? type, can fix by adding noglob before commands, but not sure how to automate
