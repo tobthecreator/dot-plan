@@ -1,0 +1,9 @@
+--------------------------------
+Dot-Plan .plan for June 18, 2023
+--------------------------------
+
+# father's day, not a lot of time
+* let's get things writing to the write folder, locally. if there is not folder, ask if we want to make one
+* we can also move file access like this into a new file
+	+	writing to the .plan folder now
+	+	this was written by the tool!!!!

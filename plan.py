@@ -4,37 +4,37 @@ from datetime import date, timedelta
 from functools import reduce
 from line import CreateLine
 
-PLANS_DIR = '{}/.plan'.format(os.getcwd())
+# TODO: update this to use project configs tomorrow
+def buildPlanFolderPath():
+	return os.getcwd() + '/.plan'
+
+def planFolderExists():
+	return os.path.exists(buildPlanFolderPath())
 
 # TODO, let's get all of the file stuff into it's own module
 def fileExists(filename):
 		return os.path.isfile(filename)
 
 def buildFilename(dateStr):
-		return "plan_{}.txt".format(dateStr)
+		return "{}/{}.txt".format(buildPlanFolderPath(), dateStr)
 
 # TODO this will need updated to actually only pull .plan files eventually
-def getAllPlanFilenames():
-	# little worried what happens when there are more
-	# than one root and dir arg here, the _
-	# can always fix later, it works now
-	for _, _, filenames in os.walk(PLANS_DIR):
+def getFilenamesFromPath(dir):
+	for _, _, filenames in os.walk(dir):
 		return filenames
 
-
 def ListPlans(args):
-	print("list plans!")
-	# print(os.getcwd())
-	
-	for filename in getAllPlanFilenames():
-		print(filename) # some of this could probably be a bash command instead
-			# in fact, couldn't all this be a bash command? lol. we're just editing a text file
+	if not planFolderExists():
+		print("No .plan folder in this current directory")
+		return 1
+
+	for filename in getFilenamesFromPath(buildPlanFolderPath()):
+		print(filename)
 
 def evaluateDateFromInput(query):
 		def regexLambda(p):
 			return lambda p, q: re.match(p, q)
 
-		print("query", query)
 		q = query[0].lower() if (query[0] not in ["", None]) else "today"
 
 		rToday = r"^today$"
@@ -184,6 +184,8 @@ def ReadPlan(args):
 
 	targetDate = evaluateDateFromInput(args)
 	filename = buildFilename(targetDate)
+
+	print('.plan folder exists', planFolderExists())
 	
 	accessFile(
 		filename, 
