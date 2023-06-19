@@ -58,6 +58,5 @@ def Router(cmd, args):
 			)
 
 		case _:
-			print("Error: Not a valid command")
-			print("Try '$dot-plan help'")
+			print("Error: Not a valid command.\nTry '$dot-plan help'")
 		

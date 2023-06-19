@@ -35,7 +35,7 @@ def evaluateDateFromInput(query):
 		def regexLambda(p):
 			return lambda p, q: re.match(p, q)
 
-		q = query[0].lower() if (query[0] not in ["", None]) else "today"
+		q = query[0].lower() if ((len(query) != 0) and (query[0] not in ["", None])) else "today"
 
 		rToday = r"^today$"
 		fToday = lambda q: date.today().strftime("%Y-%m-%d")
@@ -151,11 +151,9 @@ def evaluateDateFromInput(query):
 			if re.search(pattern, q):
 				return procedure(q)
 
-		return "default" # TODO return error
+		return 1
 
 	
-# Okay so right now there is a pattern of "Access File", where I have some procedure I want to run on a file, and I have some date I need to build that filename
-# if that file doesn't exist
 # TODO this could potentially become "accessFiles" and take a list of filenames it iterates over
 def accessFile(filename, fileOperationProc, fileDoesNotExistProc):
 	if not fileExists(filename):
@@ -172,8 +170,7 @@ def ifFileDoesNotExist(_):
 	return 1	
 
 def ReadPlan(args):
-	# for now, if there is nothing at the corresponding date, then we'll just say so
-	# eventually I want a "def findNearest" that will give you the option to scan for the nearest date and pull that up
+	# TODO: "def findNearest" that scans for a recent date
 	def readFile(filename):
 		print("\n\n")
 		print("reading {}:\n".format(filename))
@@ -182,11 +179,12 @@ def ReadPlan(args):
 			print(contents)
 		print("\n\n")
 
-	targetDate = evaluateDateFromInput(args)
 	filename = buildFilename(targetDate)
 
-	print('.plan folder exists', planFolderExists())
-	
+	targetDate = evaluateDateFromInput(args)
+	if targetDate == 1:
+		return targetDate
+
 	accessFile(
 		filename, 
 		readFile, 
@@ -209,37 +207,38 @@ def UpsertPlan(args):
 
 		return 0
 	
-	def updatePlan(filename, update):
+	def updatePlan(filename, updates):
 		with open(filename, "a") as f:
-			f.write(update)
+			for update in updates:
+				f.write(update)
+			
 
-	# TODO check for args existing correctly
-	lineType, text = args
+	def parseArgPairs(args):
+		return list(zip(args[::2], args[1::2]))
 
-	##
-	#	Find today's file, if it does not exist, create it
-	##
 	today = date.today().strftime("%Y-%m-%d")
 	filename = buildFilename(today)
-	update = CreateLine(lineType, text)
+	
+	pairs = parseArgPairs(args)
+	updates = map(lambda t: CreateLine(t[0], t[1]), pairs)
 
 	accessFile(
 		filename, 
-		lambda f: updatePlan(f, update),
+		lambda f: updatePlan(f, updates),
 		createPlan
 	)
-		
-	# TODO return code
+
 	return 0
 
-# note, this has the exact same structure as read plan
 def DeletePlan(args):
 	def deleteFile(filename): 
 		print("deleting {}".format(filename))
 		os.remove(filename)
 
+	filename = buildFilename(targetDate)
 
 	targetDate = evaluateDateFromInput(args)
-	filename = buildFilename(targetDate)
+	if targetDate == 1:
+		return targetDate
 	
 	accessFile(filename, deleteFile, ifFileDoesNotExist)

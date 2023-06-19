@@ -22,7 +22,7 @@ def main():
 
 	cmd, args = getRouterArgs()
 	# TODO make sure everything downwind can fix deal with multiple args
-	# Router(cmd, args)
+	Router(cmd, args)
 	
 if __name__ == "__main__":
     main()
