@@ -32,16 +32,22 @@ def ListPlans(args):
 		print(filename)
 
 def evaluateDateFromInput(query):
+		def todayMinusDays(numDays):
+			today = date.today()
+			prev = timedelta(days=numDays)
+
+			return (today - prev).strftime("%Y-%m-%d")
+
 		def regexLambda(p):
 			return lambda p, q: re.match(p, q)
 
 		q = query[0].lower() if ((len(query) != 0) and (query[0] not in ["", None])) else "today"
 
 		rToday = r"^today$"
-		fToday = lambda q: date.today().strftime("%Y-%m-%d")
+		fToday = lambda q: todayMinusDays(0)
 		
 		rYesterday = r"^yesterday$"
-		fYesterday = lambda q: (date.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+		fYesterday = lambda q: todayMinusDays(1)
 		
 		rXAgo = r"^(\d+)\s+(day|week|month|year)s?\s+ago$"
 		def fXAgo(q):
@@ -56,23 +62,23 @@ def evaluateDateFromInput(query):
 			}
 
 			scalar = scalars[rRange]
-			daysAgo = rNum*scalar
+			numDays = rNum*scalar
 			
-			return (date.today() - timedelta(days=daysAgo)).strftime("%Y-%m-%d")
+			return todayMinusDays(numDays)
 		
 		rXAgoShorthand = r"^-\d+[mwd](\d+[mwd])*"
 		def fXAgoShorthand(q):
 			matches = re.findall(r"\d+[mwd]", q)
 			scalars = {
-				"m": 30, 
-				"w": 7, 
-				"d": 1
+				"d": 1,
+				"w": 7,
+				"m": 30
 			}
 				
 			scaleAndSum = lambda sum, match: sum + int(match[:-1]) * scalars[match[-1]]
-			daysAgo = reduce(scaleAndSum, matches, 0)
+			numDays = reduce(scaleAndSum, matches, 0)
 			
-			return (date.today() - timedelta(days=daysAgo)).strftime("%Y-%m-%d")
+			return todayMinusDays(numDays)
 
 		rDateString = r"^(?:(\d{4})-\d{2}-\d{2}|\d{2}-\d{2}-(\d{4}))$"
 		def fDateString(q):
@@ -92,7 +98,7 @@ def evaluateDateFromInput(query):
 			
 			referenceDate = date.today() if ("last" not in q) else (date.today() - timedelta(days=7))
 			referenceWeekday = referenceDate.weekday()
-			days_of_week = [
+			daysOfWeek = [
 				("monday", "m"),
 				("tuesday", "t"),
 				("wednesday", "w"),
@@ -102,20 +108,16 @@ def evaluateDateFromInput(query):
 				("sunday", "u")
 			]
 
-			# print('filter', filter(lambda d: d[0] == q or d[1], days_of_week)[0])
-			# print('days_of_week.index()', days_of_week.index(filter(lambda d: d[0] == q or d[1], days_of_week)[0]))
+			targetWeekday = next((d for d in daysOfWeek if d[0] == extractedDay or d[1] == extractedDay), 'monday')
+			targetWeekdayIndex = daysOfWeek.index(targetWeekday)
 
-			# next((x for x in array if x % 2 == 0), None)
-			target_weekday = next((d for d in days_of_week if d[0] == extractedDay or d[1] == extractedDay), 'monday')
-			target_weekday_index = days_of_week.index(target_weekday)
-
-			if referenceWeekday == target_weekday_index:
+			if referenceWeekday == targetWeekdayIndex:
 				nearest_day = referenceDate - timedelta(weeks=1)
-			elif referenceWeekday > target_weekday_index:
-				difference = referenceWeekday - target_weekday_index
+			elif referenceWeekday > targetWeekdayIndex:
+				difference = referenceWeekday - targetWeekdayIndex
 				nearest_day = referenceDate - timedelta(days=difference)
 			else:
-				difference = target_weekday_index - referenceWeekday
+				difference = targetWeekdayIndex - referenceWeekday
 				nearest_day = referenceDate - timedelta(days=difference + 7)
 
 			return nearest_day.strftime("%Y-%m-%d")
@@ -179,12 +181,13 @@ def ReadPlan(args):
 			print(contents)
 		print("\n\n")
 
-	filename = buildFilename(targetDate)
+	
 
 	targetDate = evaluateDateFromInput(args)
 	if targetDate == 1:
 		return targetDate
 
+	filename = buildFilename(targetDate)
 	accessFile(
 		filename, 
 		readFile, 
@@ -235,10 +238,11 @@ def DeletePlan(args):
 		print("deleting {}".format(filename))
 		os.remove(filename)
 
-	filename = buildFilename(targetDate)
+
 
 	targetDate = evaluateDateFromInput(args)
 	if targetDate == 1:
 		return targetDate
 	
+	filename = buildFilename(targetDate)
 	accessFile(filename, deleteFile, ifFileDoesNotExist)

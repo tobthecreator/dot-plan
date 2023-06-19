@@ -1,0 +1,7 @@
+-----------------------
+.plan for June 19, 2023
+-----------------------
+
+	+	handling multiple args
+	+	lots of cleanup
+	*	before trying projects, lets figure out installation into PATH etc
