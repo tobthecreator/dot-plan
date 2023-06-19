@@ -41,16 +41,7 @@ def evaluateDateFromInput(query):
 		def regexLambda(p):
 			return lambda p, q: re.match(p, q)
 
-		q = query[0].lower() if ((len(query) != 0) and (query[0] not in ["", None])) else "today"
-
-		rToday = r"^today$"
-		fToday = lambda q: todayMinusDays(0)
-		
-		rYesterday = r"^yesterday$"
-		fYesterday = lambda q: todayMinusDays(1)
-		
-		rXAgo = r"^(\d+)\s+(day|week|month|year)s?\s+ago$"
-		def fXAgo(q):
+		def getXDaysAgo(q):
 			rNum = int(re.match(r"^(\d+)", q).group(0))
 			rRange = re.search(r"(day|week|month|year)", q).group(0)
 
@@ -62,12 +53,11 @@ def evaluateDateFromInput(query):
 			}
 
 			scalar = scalars[rRange]
-			numDays = rNum*scalar
+			numDays = rNum * scalar
 			
 			return todayMinusDays(numDays)
 		
-		rXAgoShorthand = r"^-\d+[mwd](\d+[mwd])*"
-		def fXAgoShorthand(q):
+		def getXDaysAgoShorthand(q):
 			matches = re.findall(r"\d+[mwd]", q)
 			scalars = {
 				"d": 1,
@@ -80,8 +70,7 @@ def evaluateDateFromInput(query):
 			
 			return todayMinusDays(numDays)
 
-		rDateString = r"^(?:(\d{4})-\d{2}-\d{2}|\d{2}-\d{2}-(\d{4}))$"
-		def fDateString(q):
+		def getDateString(q):
 			x = q.split("-")
 
 			if (len(x[0]) == 4):
@@ -89,8 +78,7 @@ def evaluateDateFromInput(query):
 
 			return "{}-{}-{}".format(x[2], x[1], x[0])
 			
-		rDayOfWeek = r"\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|m|t|w|r|f|s|u)\b"
-		def fDayOfWeek(q):
+		def getNearestWeekday(q):
 			match = re.search(rDayOfWeek, q)
 
 			extractedDay = q[match.start():match.end()]
@@ -122,34 +110,19 @@ def evaluateDateFromInput(query):
 
 			return nearest_day.strftime("%Y-%m-%d")
 		
-		cases = [
-			(
-				rToday, 
-				fToday
-			),
-			(
-				rYesterday, 
-				fYesterday
-			),
-			(
-				rXAgo,
-				fXAgo
-			),
-			(
-				rXAgoShorthand,
-				fXAgoShorthand
-			),
-			(
-				rDateString,
-				fDateString				
-			),
-			(
-				rDayOfWeek,
-				fDayOfWeek
-			)
-		]
 
-		for pattern, procedure in cases:
+		cases = {
+			r"^today$": lambda q: todayMinusDays(0),
+			r"^yesterday$": lambda q: todayMinusDays(1), 
+			r"^(\d+)\s+(day|week|month|year)s?\s+ago$": getXDaysAgo,
+			r"^-\d+[mwd](\d+[mwd])*": getXDaysAgoShorthand,
+			r"^(?:(\d{4})-\d{2}-\d{2}|\d{2}-\d{2}-(\d{4}))$": getDateString,
+			r"\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|m|t|w|r|f|s|u)\b": getNearestWeekday
+		}
+
+		q = query[0].lower() if ((len(query) != 0) and (query[0] not in ["", None])) else "today"
+
+		for pattern, procedure in cases.items():
 			if re.search(pattern, q):
 				return procedure(q)
 
@@ -188,6 +161,7 @@ def ReadPlan(args):
 		return targetDate
 
 	filename = buildFilename(targetDate)
+
 	accessFile(
 		filename, 
 		readFile, 
@@ -245,4 +219,9 @@ def DeletePlan(args):
 		return targetDate
 	
 	filename = buildFilename(targetDate)
-	accessFile(filename, deleteFile, ifFileDoesNotExist)
+
+	accessFile(
+		filename, 
+		deleteFile, 
+		ifFileDoesNotExist
+	)
